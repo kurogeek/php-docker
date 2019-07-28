@@ -1,9 +1,12 @@
 version: '3'
 services:
   php-fpm:
-    image: php:fpm-alpine
+    # image: php:fpm-alpine
+    build:
+      context: ./php-fpm
     volumes:
       - ./src:/var/www
+      - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
     depends_on: 
       - database
   
@@ -27,4 +30,6 @@ services:
       - MYSQL_PASSWORD=qwer1234
       - MYSQL_ROOT_PASSWORD=docker
     volumes:
+      - ./mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
       - ./data-dir:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/data.sql
